@@ -1,4 +1,4 @@
-//Digitakl PID controller created by Alejandro Dumas
+//Discrete digital PID controller created by Alejandro Dumas
 
 #include "Wire.h"
 #define PCF8591 (0x90 >> 1) // I2C bus address
@@ -38,7 +38,7 @@ double e_2prev = 0;         //error prior to previous error
 
 double Vmax = 1023;
 double Vmin = 0;
-double V = 0;
+
 
 double sample_counter = 0;          //Sample counter → To create a database we identify the number of sample, not necesary to controller
 
