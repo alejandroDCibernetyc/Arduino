@@ -24,7 +24,7 @@ double kd = k*Td;
 //------------Constant definition-----------------
 
 double a = kp + (ki*Ts)/2 + kd/Ts;
-double b = -kp + (ki+Ts)/2  + (2*kd)/Ts;
+double b = -kp + (ki*Ts)/2  + (2*kd)/Ts;
 double c = kd/Ts;
 
 //----------Definition Controller variables-------
