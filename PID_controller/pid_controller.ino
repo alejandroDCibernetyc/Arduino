@@ -1,5 +1,7 @@
 //PID controller created by Alejandro Dumas
 
+//This code works with driver L298N and similars 
+
 double target_position = 0;
 double motor_position =0;
 
