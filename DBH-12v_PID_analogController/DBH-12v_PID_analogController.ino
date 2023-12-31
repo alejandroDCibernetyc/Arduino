@@ -6,9 +6,9 @@ double target_position = 0;
 double motor_position = 0;
 
 //------------PID GAINS----------------- 
-double kp = 0.4;   //1.5   //0.2
+double kp = 0.4;   
 double ki = 0.0001;
-double kd = 0.7;  //25.5;   //2.500;     //2
+double kd = 0.7;  
 
 //----------Controller variables-------
 
@@ -54,6 +54,8 @@ void WriteDriverVoltage(float V, float Vmax) {
 
 
 volatile double encoders_position[] = {0,0};      //Array that contains the values of encoders, amount of ticks
+                                                  //encoder 1 → Target encoder
+                                                  //encoder 2 → motor encoder
 const int encoder_pin_b[] = {4,5};                //Indicates the arduino pins that connects with encoders terminals B 
                                                   //Pin 4 for the encoder target, pin 5 for the motor encoder
 
@@ -62,10 +64,10 @@ void setup() {
   Serial.begin (9600);
   pinMode(DirPin1, OUTPUT);
   pinMode(DirPin2, OUTPUT);  
-  pinMode(encoder_pin_b[0], INPUT_PULLUP);    //pin B to encoder 1 (target encoder) WITH INTERNAL PULLUP
-  pinMode(encoder_pin_b[1], INPUT_PULLUP);    //Pin B para encoder 2 (motor encoder)
-  pinMode(2, INPUT_PULLUP);                   // internal pullup input pin   A encoder 1
-  pinMode(3, INPUT_PULLUP);                   // internalL pullup input pin  A encoder 2
+  pinMode(encoder_pin_b[0], INPUT_PULLUP);    //pin B (Green)to encoder 1 (target encoder) WITH INTERNAL PULLUP
+  pinMode(encoder_pin_b[1], INPUT_PULLUP);    //Pin B para(Green) encoder 2 (motor encoder)
+  pinMode(2, INPUT_PULLUP);                   // internal pullup input pin   A (white)encoder 1
+  pinMode(3, INPUT_PULLUP);                   // internalL pullup input pin  A (white)encoder 2
   
   
   //Setting up interrupt

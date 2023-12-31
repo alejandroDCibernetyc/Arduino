@@ -5,22 +5,22 @@
 double target_position = 0;
 double motor_position = 0;
 //------------Sampling Times----------------- 
-double Ts = 5;       //Sampling period
-double Ti = 0.5;     //proposed time
-double Td = 0.1;	  //proposed time
+double Ts = 0.00066;       //Sampling period
+double Ti = 1;     //proposed time
+double Td = 1;	  //proposed time
 
 
 //------------PID GAINS----------------- 
 
-double k = 0.8;      //Declaring the main gain, to change the gains just change ths value, others K gains depends in this value
+double k = 500000;      //Declaring the main gain, to change the gains just change ths value, others K gains depends in this value
 double kp = k;   
-double ki = k/Ti;
-double kd = k*Td;  
+double ki = 0;//k/Ti;
+double kd = 0.00001;//k*Td;  
 //------------Constant definition-----------------
 
-double a = kp + (ki*Ts)/2 + kd/Ts;
-double b = -kp + (ki*Ts)/2  + (2*kd)/Ts;
-double c = kd/Ts;
+double a = kp + ((ki*Ts)/2) + (kd/Ts);
+double b = -kp + ((ki*Ts)/2)  - ((2*kd)/Ts);
+double c = (kd/Ts);
 
 
 //----------Controller variables-------
@@ -47,17 +47,18 @@ const byte DirPin2 = 11;  //PWM pin IN2A
 
 void WriteDriverVoltage(float V, float Vmax) {
   int PWMval = int(255 * abs(V) / Vmax);
-  if (PWMval > 50) {
-    PWMval = 50;                   //Make sure dont pass the pwm max value that arduino supports
+  if (PWMval > 20) {
+    PWMval = 20;                   //Make sure dont pass the pwm max value that arduino supports
   }
   if (V > 0) {
+  
     analogWrite(DirPin1, PWMval);
-    digitalWrite(DirPin2, LOW);
+    analogWrite(DirPin2, 0);     
+
   }
   else if (V < 0) {
-    
-    digitalWrite(DirPin1, LOW);
-    analogWrite(DirPin2, PWMval);
+    analogWrite(DirPin1, 0);
+    analogWrite(DirPin2, PWMval);    
   }
   else {
     digitalWrite(DirPin1, LOW);
@@ -98,7 +99,7 @@ void setup() {
    
    e = target_position - motor_position;                                       // Error
 
-   u = u_prev + (a * e) + (b * e_prev) + (c + e_2prev);    // Controlling Function
+   u = u + (a * e) + (b * e_prev) + (c + e_2prev);    // Controlling Function
   
     if (u > Vmax) {
       u = Vmax;
@@ -112,12 +113,13 @@ void setup() {
     //------- Save past values---------------- 
     e_2prev = e_prev;       	//we must save the error before the previous error, first cycle this have to ve 0, in the second it have to ve 0 to, but in the third cyle it have to have the first error
     e_prev = e;			//saving previous error
-    u_prev = u;			//Saving previous function controller
+    		//Saving previous function controller
     
 
     //Serial.print(sample_counter); Serial.print("  ");
     Serial.print(motor_position); Serial.print("  ");
     Serial.print(target_position); Serial.print("  ");
+    Serial.print(e); Serial.print("  ");
     //Serial.print(dt); Serial.print("  ");
     Serial.print(u); Serial.print("  \n");
     sample_counter += 1;
